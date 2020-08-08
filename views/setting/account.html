@@ -1,0 +1,82 @@
+{{extend '../_layout/layout.html'}}
+
+{{block 'title'}}{{'用户设置'}}{{/block}}
+
+{{block 'head'}}
+<style>
+  .delete_account {
+    margin-left: 15px;
+  }
+</style>
+{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  <div class="col-md-3 list-group">
+    <a href="#" class="list-group-item disabled">用户设置</a>
+    <a href="/setting/profile?id={{user._id}}" class="list-group-item">基本信息</a>
+    <a href="/setting/account?id={{user._id}}" class="list-group-item active">帐号设置</a>
+  </div>
+  <div class="col-md-5">
+    <div class="subhead">
+      <h2>修改密码</h2>
+    </div>
+    <hr>
+    <form id="account_form">
+      <input type="hidden" name="user_id" value="{{user._id}}">
+      <div class="form-group">
+        <label>当前密码</label>
+        <input type="password" name="current_password" id="current_password" class="form-control " placeholder="">
+      </div>
+      <div class="form-group">
+        <label>新的密码</label>
+        <input type="password" name="new_password" id="new_password" class="form-control" placeholder="">
+      </div>
+      <div class="form-group">
+        <label>确认密码</label>
+        <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="">
+      </div>
+      <button type="submit" class="btn btn-success">保存</button>
+    </form>
+    <div class="subhead">
+      <h2>注销帐号</h2>
+      <hr>
+    </div>
+
+    <div>
+      <p>一旦注销，不可找回，请谨慎操作</p>
+
+      <div class="row clearfix">
+        <a id="modal-738493" href="#modal-container-738493" role="button" class="btn btn-danger delete_account"
+          data-toggle="modal">删除</a>
+        <div class="modal fade" id="modal-container-738493" role="dialog" aria-labelledby="myModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title" id="myModalLabel">
+                  注意
+                </h4>
+              </div>
+              <div class="modal-body">
+                一旦注销，不可找回，请谨慎操作
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="delete_account" data-dismiss="modal">删除</button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">关闭</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+  </div>
+</section>
+{{/block}}
+
+{{block 'script'}}
+<script src="/public/js/account.js"></script>
+{{/block}}

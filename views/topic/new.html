@@ -1,0 +1,55 @@
+{{extend '../_layout/layout.html'}}
+
+{{block 'title'}}{{'说点什么吧~~'}}{{/block}}
+
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/main.css">
+{{/block}}
+
+{{block 'body'}}
+{{ if user }}
+
+<section class="container">
+  <div class="row">
+    <div class="col-md-5">
+      <form id="new_topic_form">
+        <!-- <div class="form-group">
+          <label for="">板块</label>
+          <input type="text" class="form-control" placeholder="来个吸引人的标题吧...">
+        </div> -->
+        <div class="form-group">
+          <label for="">选择栏目</label>
+          <select class="form-control" name="model">
+            <option value="分享">分享</option>
+            <option value="问答">问答</option>
+            <option value="招聘">招聘</option>
+          </select>
+        </div>
+        <input type="hidden" name="authorId" value="{{user._id}}">
+        <input type="hidden" name="essayNumber" value="{{user.essayNumber}}">
+        <input type="hidden" name="author" value="{{user.nickname}}">
+        <div class="form-group">
+          <label for="">标题</label>
+          <input type="text" class="form-control" name="title" placeholder="来个吸引人的标题吧..." maxlength="36">
+        </div>
+        <div class="form-group">
+          <label for="">内容</label>
+          <textarea class="form-control" rows="3" name="content" placeholder="说点什么吧..."></textarea>
+        </div>
+        <button type="" class="btn btn-default">发表帖子</button>
+      </form>
+    </div>
+  </div>
+</section>
+{{ else }}
+<p style="margin-left: 200px;">请重新登录!</p>
+<script>
+  window.alert('请重新登录!');
+</script>
+{{ /if }}
+
+{{/block}}
+
+{{block 'script'}}
+<script src="/public/js/new.js"></script>
+{{/block}}

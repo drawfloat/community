@@ -1,0 +1,58 @@
+.dropdown-current-user {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 5px;
+}
+
+.navbar-default .navbar-nav>.open>a,
+.navbar-default .navbar-nav>.open>a:hover,
+.navbar-default .navbar-nav>.open>a:focus {
+  background: none;
+}
+
+.navbar-brand img {
+  position: absolute;
+  left: 190px;
+  top: 50%;
+  width: 150px;
+  height: 45px;
+  transform: translateY(-50%);
+}
+
+.input_search {
+  position: absolute;
+  left: 500px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dropdown-current-user .dropdown-menu li {
+  list-style: none;
+}
+
+.panel .panel-heading .action i {
+  margin-right: 10px;
+}
+
+.main_footer {
+  padding-bottom: 49px;
+}
+
+.glyphicon-star {
+  color: #000;
+}
+
+#user_star a,
+#no_user_star a {
+  color: #333;
+  text-decoration: none;
+}
+
+.index_star a {
+  color: #333;
+  text-decoration: none;
+}
+#topicBox .col-md-10 img {
+  width: 64px;
+  height: 64px;
+}

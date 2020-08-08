@@ -1,0 +1,224 @@
+{{extend './_layout/layout.html'}}
+
+{{block 'title'}}{{'交流社区 - 首页'}}{{/block}}
+
+{{block 'head'}}
+<!-- <link href="http://wenda.golaravel.com/static/css/default/common.css?v=20140930" rel="stylesheet" type="text/css" /> -->
+<link rel="stylesheet" href="/public/css/common.css">
+<link rel="stylesheet" href="/public/css/pagination.css" />
+<script src="/public/js/pagination.js"></script>
+<style>
+    .media {
+        background-color: white;
+    }
+
+    #wrap1 {
+        margin-top: 20px;
+    }
+
+    #topicBox .col-md-10 img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .limit_length a {
+        display: block;
+        width: 245px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+{{/block}}
+
+{{block 'body'}}
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-9 column">
+            <div class="col-md-12"></div>
+            <div class="row search_delete" id="search_delete">
+                {{if TopTopic.length}}
+                {{each TopTopic}}
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img alt="600x200" src="/public/img/default{{$index+1}}.jpg" />
+                        <div class="caption limit_length">
+                            <h3>
+                                {{$value.author}}
+                            </h3>
+                            <p>
+                                <a href="/topic/read?topic_id={{$value._id}}&user_id={{user&&user._id}}"
+                                    class="text-danger">
+                                    {{$value.title}}
+                                </a>
+                            </p>
+                            <p class="index_star">
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span>Star</span>
+                                <span>{{$value.starNumber}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                {{else}}
+                {{each defaultTopTopic}}
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <img alt="600x200" src="/public/img/default{{$index+1}}.jpg" />
+                        <div class="caption limit_length">
+                            <h3>
+                                {{$value.author}}
+                            </h3>
+                            <p>
+                                <a href="/topic/read?topic_id={{$value._id}}&user_id={{user&&user._id}}"
+                                    class="text-danger">
+                                    {{$value.title}}
+                                </a>
+                            </p>
+                            <p class="index_star">
+                                <span class="glyphicon glyphicon-star-empty"></span>
+                                <span>Star</span>
+                                <span>{{$value.starNumber}}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                {{/if}}
+            </div>
+
+            <div id="topicBox">
+                {{each topic}}
+                <div class="media col-md-10 column">
+                    <a href="/personal/personal?personal_id={{$value.authorId}}"
+                        class="pull-left">
+                        <img src="/public/img/default4.jpg" class="media-object" alt='' /></a>
+                    <div class="media-body">
+                        <h3 class="media-heading">
+                            <a class="text-success"
+                                href="/topic/read?topic_id={{$value._id}}">{{$value.author}}</a>
+                        </h3>
+                        <p class="text-left text-warning limit_length">
+                            {{$value.title}}
+                            <span class="pull-right text-success">{{$value.createdTime}}</span>
+                        </p>
+
+                        <!-- 最热回复 功能 -->
+                        <!-- <div class="media">
+                        <p class="text-left text-danger">最热回复</p>
+                        <a href="#" class="pull-left"><img src="/public/img/default4.jpg" class="media-object"
+                                alt='' /></a>
+                        <div class="media-body">
+                            <h4 class="media-heading text-primary">
+                                施工中
+                            </h4>
+                            <p>施工中</p>
+                        </div>
+                    </div> -->
+                    </div>
+                </div>
+                <!-- 标星数 -->
+                <span class="action pull-right starBox">
+                    <a href="javascript:;"><i
+                            class="glyphicon glyphicon-star pull-right">&nbsp;{{$value.starNumber}}</i></a>
+                </span>
+                {{/each}}
+            </div>
+        </div>
+        <div class="col-md-3 column">
+            <div class="text-left">
+                <h3>
+                    <strong>活跃用户</strong>
+                </h3>
+            </div>
+            <div class="panel-group" id="panel-919524">
+                <!-- 活跃用户排序 -->
+                {{each active}}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title"
+                            href="/personal/personal?personal_id={{$value._id}}">{{$value.nickname}}</a>
+                    </div>
+                    <div class="panel-collapse in">
+                        <div class="panel-body">
+                            {{$value.essayNumber}}篇帖子
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+                <!-- <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <a class="panel-title collapsed" data-toggle="collapse" data-parent="#panel-919524"
+                            href="#panel-element-986684">Mikoto</a>
+                    </div>
+                    <div id="panel-element-986684" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            施工中...
+                        </div>
+                    </div>
+                </div> -->
+
+            </div>
+        </div>
+    </div>
+    <!-- 分页容器 -->
+    <section class="container search_delete" onselectstart="return false">
+        <div class="box" id="wrap1"></div>
+    </section>
+</div>
+
+{{/block}}
+
+{{block 'script'}}
+<script>
+    $(function () {
+        // 分页
+        var onPagechange = function (currentPage) {
+            $.get('/pagination', {
+                currentPage: currentPage,
+                pagesize: `{{page.pagesize}}`
+            }, function (data, status, xhr) {
+                if (status === 'success') {
+                    $('#topicBox').empty();
+                    for (var key in data) {
+                        $('#topicBox').append(
+                            `
+                        <div class="media col-md-10 column">
+                    <a href="/personal/personal?personal_id=` + data[key].authorId + `"
+                        class="pull-left">
+                        <img src="/public/img/default4.jpg" class="media-object" alt='' /></a>
+                    <div class="media-body">
+                        <h3 class="media-heading">
+                            <a class="text-success"
+                                href="/topic/read?topic_id=` + data[key]._id + `">` + data[key].author +
+                        `</a>
+                        </h3>
+                        <p class="text-left text-warning limit_length">
+                            ` + data[key].title + `
+                            <span class="pull-right text-success">` + data[key].createdTime + `</span>
+                        </p>
+                    </div>
+                </div>
+                <span class="action pull-right starBox">
+                    <a href="javascript:;"><i
+                            class="glyphicon glyphicon-star pull-right">&nbsp;` + data[key].starNumber + `</i></a>
+                </span>
+                        `
+                        );
+                    }
+                }
+            });
+        }
+        var obj = {
+            wrapid: 'wrap1', //页面显示分页器容器id
+            total: `{{page.total}}`, //总条数
+            pagesize: `{{page.pagesize}}`, //每页显示10条
+            currentPage: 1, //当前页
+            onPagechange: onPagechange
+            //btnCount:7 页数过多时，显示省略号的边界页码按钮数量，可省略，且值是大于5的奇数
+        }
+        pagination.init(obj);
+    });
+</script>
+{{/block}}

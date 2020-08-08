@@ -1,0 +1,377 @@
+{{extend '../_layout/layout.html'}}
+
+{{block 'title'}}{{'管理员页面'}}{{/block}}
+
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/main.css">
+<link rel="stylesheet" href="/public/css/pagination.css" />
+<script src="/public/js/pagination.js"></script>
+{{/block}}
+
+{{block 'body'}}
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            {{if user}}
+            <div class="tabbable" id="tabs-203743">
+                <ul class="nav nav-tabs">
+                    <li class="active">
+                        <a href="#topic_manage" data-toggle="tab">帖子管理</a>
+                    </li>
+                    <li>
+                        <a href="#user_manage" data-toggle="tab">用户管理</a>
+                    </li>
+                </ul>
+                <hr>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="topic_manage">
+                        <span class="allTopicNumber">累计发帖数：{{allTopicNumber}} ;</span>
+                        <span class="topTopicNumber"> 被置顶帖子数：{{topTopicNumber}} ;</span>
+                        <span class="deleteTopicNumber"> 被删除帖子数：{{deleteTopicNumber}}</span>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#topic_operate" data-toggle="tab" id="top_active">帖子操作</a>
+                                </li>
+                                <li>
+                                    <a href="#cancel_top" data-toggle="tab" id="cancel_active">取消置顶</a>
+                                </li>
+                                <li>
+                                    <a href="#cancel_delete" data-toggle="tab">取消删除</a>
+                                </li>
+                            </ul>
+                            <hr>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="topic_operate">
+                                    <div>
+                                        <form class="navbar-form navbar-left" role="search" id="admin_search">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="search_topic" />
+                                                <button type="submit" class="btn btn-default">搜索帖子</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    发帖人
+                                                </th>
+                                                <th>
+                                                    标题
+                                                </th>
+                                                <th>
+                                                    发帖时间
+                                                </th>
+                                                <th>
+                                                    操作
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin_topic">
+                                            {{each normalTopic}}
+                                            <tr>
+                                                <td>
+                                                    {{$value.author}}
+                                                </td>
+                                                <td>
+                                                    {{$value.title}}
+                                                </td>
+                                                <td>
+                                                    {{$value.createdTime}}
+                                                </td>
+                                                <td class="admin_operate">
+                                                    <input type="hidden" value="{{$value._id}}" class="topic_id">
+                                                    <a href="javascript:;"
+                                                        class="btn btn-xs btn-default top_topic">置顶</a>
+                                                    <a href="javascript:;"
+                                                        class="btn btn-xs btn-danger delete_topic">删除</a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                    <!-- 分页容器 -->
+                                    <section class="container" onselectstart="return false">
+                                        <div class="box" id="wrap1"></div>
+                                    </section>
+                                </div>
+                                <div class="tab-pane" id="cancel_top">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    发帖人
+                                                </th>
+                                                <th>
+                                                    标题
+                                                </th>
+                                                <th>
+                                                    发帖时间
+                                                </th>
+                                                <th>
+                                                    操作
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cancel_top_topic">
+                                            {{each topTopic}}
+                                            <tr class="cancel_tr">
+                                                <td>
+                                                    {{$value.author}}
+                                                </td>
+                                                <td>
+                                                    {{$value.title}}
+                                                </td>
+                                                <td>
+                                                    {{$value.createdTime}}
+                                                </td>
+                                                <td class="admin_operate">
+                                                    <input type="hidden" value="{{$value._id}}" class="topic_id">
+                                                    <a href="javascript:;"
+                                                        class="btn btn-xs btn-primary cancel_top_operate">取消置顶</a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="cancel_delete">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    发帖人
+                                                </th>
+                                                <th>
+                                                    标题
+                                                </th>
+                                                <th>
+                                                    发帖时间
+                                                </th>
+                                                <th>
+                                                    操作
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cancel_delete_topic">
+                                            {{each deleteTopic}}
+                                            <tr class="cancel_tr">
+                                                <td>
+                                                    {{$value.author}}
+                                                </td>
+                                                <td>
+                                                    {{$value.title}}
+                                                </td>
+                                                <td>
+                                                    {{$value.createdTime}}
+                                                </td>
+                                                <td class="admin_operate">
+                                                    <input type="hidden" value="{{$value._id}}" class="topic_id">
+                                                    <a href="javascript:;"
+                                                        class="btn btn-xs btn-primary cancel_delete_operate">取消删除</a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="user_manage">
+                        <span class="normalUserNumber">正常用户：{{normalUserNumber}} ;</span>
+                        <span class="limitUserNumber"> 禁言用户：{{limitUserNumber}} ;</span>
+                        <div class="tabbable">
+                            <ul class="nav nav-tabs">
+                                <li class="active">
+                                    <a href="#user_operate" data-toggle="tab" id="limit_active">权限管理</a>
+                                </li>
+                                <li>
+                                    <a href="#cancel_limit" data-toggle="tab" id="restore_active">恢复权限</a>
+                                </li>
+                            </ul>
+                            <hr>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="user_operate">
+                                    <div>
+                                        <form class="navbar-form navbar-left" role="search" id="user_search">
+                                            <div class="form-group">
+                                                <input type="text" class="form-control" name="search_user" />
+                                                <button type="submit" class="btn btn-default">搜索用户</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    昵称
+                                                </th>
+                                                <th>
+                                                    邮箱
+                                                </th>
+                                                <th>
+                                                    创建时间
+                                                </th>
+                                                <th>
+                                                    操作
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="admin_user">
+                                            {{each normalUser}}
+                                            <tr>
+                                                <td>
+                                                    {{$value.nickname}}
+                                                </td>
+                                                <td>
+                                                    {{$value.email}}
+                                                </td>
+                                                <td>
+                                                    {{$value.createdTime}}
+                                                </td>
+                                                <td class="admin_operate">
+                                                    <input type="hidden" value="{{$value._id}}" class="user_id">
+                                                    <a href="javascript:;"
+                                                        class="btn btn-xs btn-default user_gag">禁言</a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane" id="cancel_limit">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    昵称
+                                                </th>
+                                                <th>
+                                                    邮箱
+                                                </th>
+                                                <th>
+                                                    创建时间
+                                                </th>
+                                                <th>
+                                                    操作
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="cancel_limit_user">
+                                            {{each gagUser}}
+                                            <tr class="cancel_tr">
+                                                <td>
+                                                    {{$value.nickname}}
+                                                </td>
+                                                <td>
+                                                    {{$value.email}}
+                                                </td>
+                                                <td>
+                                                    {{$value.createdTime}}
+                                                </td>
+                                                <td class="admin_operate">
+                                                    <input type="hidden" value="{{$value._id}}" class="user_id">
+                                                    <a href="javascript:;"
+                                                        class="btn btn-xs btn-primary cancel_gag_operate">取消禁言</a>
+                                                </td>
+                                            </tr>
+                                            {{/each}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{else}}
+            <p>请登录管理员账号！</p>
+            {{/if}}
+        </div>
+    </div>
+</div>
+
+{{/block}}
+
+{{block 'script'}}
+<script src="/public/js/admin.js"></script>
+<script>
+    // 分页
+    var onPagechange = function (currentPage) {
+        $.get('/admin/pagination', {
+            currentPage: currentPage,
+            pagesize: `{{page.pagesize}}`
+        }, function (data, status, xhr) {
+            if (status === 'success') {
+                onTopicChange($('#admin_topic'), data, parseInt(paginationObj.pagesize));
+            }
+        });
+    }
+    var paginationObj = {
+        wrapid: 'wrap1', //页面显示分页器容器id
+        total: `{{page.total}}`, //总条数
+        pagesize: `{{page.pagesize}}`, //每页显示条数
+        currentPage: 1, //当前页
+        onPagechange: onPagechange
+        //btnCount:7 页数过多时，显示省略号的边界页码按钮数量，可省略，且值是大于5的奇数
+    }
+    pagination.init(paginationObj);
+
+    function onTopicChange(ele, data, pagesize) {
+        // 复用函数
+        pagesize = pagesize || data.length;
+        ele.empty();
+        for (var key in data) {
+            if (key < pagesize) {
+                ele.append(` <tr>
+        <td>
+            ` + data[key].author + `
+        </td>
+        <td>
+            ` + data[key].title + `
+        </td>
+        <td>
+            ` + data[key].createdTime + `
+        </td>
+        <td class="admin_operate">
+            <input type="hidden" value="` + data[key]._id + `" class="topic_id">
+            <a href="javascript:;" class="btn btn-xs btn-default top_topic">置顶</a>
+            <a href="#" class="btn btn-xs btn-danger delete_topic">删除</a>
+        </td>
+        </tr>
+        `);
+            }
+        }
+        ele.find('.admin_operate').each(function () {
+            $(this).find('.top_topic').on('click', function () {
+                var topic_id = $(this).parents('.admin_operate')
+                    .find('.topic_id').val()
+                    .replace(/"/g, '');
+                $.get('/admin/top', {
+                    topic_id: topic_id
+                }, function (data, status) {
+                    if (data.err_code === 0) {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+        ele.find('.admin_operate').each(function () {
+            $(this).find('.delete_topic').on('click', function () {
+                var topic_id = $(this).parents('.admin_operate')
+                    .find('.topic_id').val()
+                    .replace(/"/g, '');
+                $.get('/admin/delete', {
+                    topic_id: topic_id
+                }, function (data, status) {
+                    if (data.err_code === 0) {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+    }
+</script>
+{{/block}}

@@ -1,0 +1,41 @@
+{{extend '../_layout/layout.html'}}
+
+{{block 'title'}}{{'栏目浏览'}}{{/block}}
+
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/main.css">
+{{/block}}
+
+{{block 'body'}}
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-9 column">
+            <div id="topicBox">
+                {{each topic}}
+                <div class="media col-md-10 column">
+                    <a href="/personal/personal?personal_id={{$value.authorId}}&user_id={{user&&user._id}}"
+                        class="pull-left">
+                        <img src="/public/img/default4.jpg" class="media-object" alt='' /></a>
+                    <div class="media-body">
+                        <h3 class="media-heading">
+                            <a class="text-success"
+                                href="/topic/read?topic_id={{$value._id}}&user_id={{user&&user._id}}">{{$value.author}}</a>
+                        </h3>
+                        <p class="text-left">
+                            {{$value.title}}
+                            <br>
+                            <span class="pull-right">{{$value.createdTime}}</span>
+                        </p>
+                    </div>
+                </div>
+                <!-- 标星数 -->
+                <span class="action pull-right starBox">
+                    <a href="javascript:;"><i
+                            class="glyphicon glyphicon-star pull-right">&nbsp;{{$value.starNumber}}</i></a>
+                </span>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+</div>
+{{/block}}

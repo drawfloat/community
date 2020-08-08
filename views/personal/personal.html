@@ -1,0 +1,87 @@
+{{extend '../_layout/layout.html'}}
+
+{{block 'title'}}{{personal.nickname+'的个人主页'}}{{/block}}
+
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/main.css">
+<style>
+    .avatar {
+        padding-left: 15px;
+    }
+    .avatar img {
+        width: 140px;
+        height: 140px;
+    }
+</style>
+{{/block}}
+
+{{block 'body'}}
+<div class="container">
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="row clearfix">
+                <div class="col-md-2 column avatar">
+                    <img alt="140x140" src="/public/img/avatar.png" />
+                </div>
+                <div class="col-md-7 column">
+                    <h3>
+                        {{personal.nickname}}
+                    </h3>
+                    <em>简介：</em>
+                    <p>
+                        <br> &nbsp;&nbsp;{{personal.bio}}
+                    </p>
+                </div>
+                <div class="col-md-3 column">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            邮箱：{{personal.email}}
+                        </div>
+                        <div class="panel-body">
+                            性别：{{if personal.gender===0}}男{{else if personal.gender===1}}女{{else}}保密{{/if}}
+                        </div>
+                        <div class="panel-footer">
+                            发表帖子：{{personal.essayNumber}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row clearfix">
+        <div class="col-md-12 column">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">
+                        {{if personal.gender===0}}他{{else if personal.gender===1}}她{{else}}他{{/if}}发表的帖子：
+                    </h3>
+                </div>
+                <div class="panel-body">
+                    喜欢请多关注哦~
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="topicBox">
+        {{each topic}}
+        <div class="media col-md-10 column">
+            <a href="/personal/personal?personal_id={{$value.authorId}}" class="pull-left">
+                <img src="/public/img/default4.jpg" class="media-object" alt='' /></a>
+            <div class="media-body">
+                <h3 class="media-heading">
+                    <a class="text-success" href="/topic/read?topic_id={{$value._id}}">{{$value.author}}</a>
+                </h3>
+                <p class="text-left text-warning limit_length">
+                    {{$value.title}}
+                    <span class="pull-right text-success">{{$value.createdTime}}</span>
+                </p>
+            </div>
+        </div>
+        <!-- 标星数 -->
+        <span class="action pull-right starBox">
+            <a href="javascript:;"><i class="glyphicon glyphicon-star pull-right">&nbsp;{{$value.starNumber}}</i></a>
+        </span>
+        {{/each}}
+    </div>
+</div>
+{{/block}}

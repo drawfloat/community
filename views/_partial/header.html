@@ -1,0 +1,140 @@
+<div>
+    <div style="height:70px;"></div>
+    <nav class="navbar navbar-default navbar-fixed-top clearfix">
+        <div class="container">
+            <div class="row clearfix">
+                <div class="col-md-12 column">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="javascript:;">交流社区</a>
+                    </div>
+                    <div class="collapse navbar-collapse">
+                        <ul class="nav navbar-nav" id="activeMark">
+                            {{if activeMark===0}}
+                            <li class="active">
+                                <a href="/">首页</a>
+                            </li>
+                            {{else}}
+                            <li>
+                                <a href="/">首页</a>
+                            </li>
+                            {{/if}}
+                            {{if activeMark===1}}
+                            <li class="active">
+                                <a href="/recentTopic">最新帖子</a>
+                            </li>
+                            {{else}}
+                            <li>
+                                <a href="/recentTopic" >最新帖子</a>
+                            </li>
+                            {{/if}}
+                            {{if activeMark===2}}
+                            <li class="active">
+                                <a href="/hotTopic">最火帖子</a>
+                            </li>
+                            {{else}}
+                            <li>
+                                <a href="/hotTopic">最火帖子</a>
+                            </li>
+                            {{/if}}
+                            {{if activeMark===3}}
+                            <li class="dropdown active">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">专栏选择<strong
+                                        class="caret"></strong></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="/shareTopic">分享</a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="/questionTopic">问答</a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="/offerTopic">招聘</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{else}}
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">专栏选择<strong
+                                        class="caret"></strong></a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="/shareTopic">分享</a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="/questionTopic">问答</a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="/offerTopic">招聘</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{/if}}
+                        </ul>
+                        {{if activeMark===0}}
+                        <form class="navbar-form navbar-left" role="search" id="topic_search">
+                            <div class="form-group">
+                                <input type="text" class="form-control" name="search_topic" />
+                                <button type="submit" class="btn btn-default">搜索帖子</button>
+                            </div>
+                        </form>
+                        {{/if}}
+                        <ul class="nav navbar-nav navbar-right">
+                            {{if user}}
+                            <li>
+                                <a class="btn " href="javascript:;">欢迎: {{ user.nickname }}</a>
+                            </li>
+                            <li>
+                                <a href="/topic/new">发表帖子</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">设置<strong
+                                        class="caret"></strong></a>
+                                <ul class="dropdown-menu">
+                                    {{ if user.isAdmin}}
+                                    <li>
+                                        <a href="/admin">后台管理</a>
+                                    </li>
+                                    <li class="divider">
+                                        {{/if}}
+                                    <li>
+                                        <a
+                                            href="/personal/personal?personal_id={{user._id}}">个人主页</a>
+                                    </li>
+                                    <li class="divider">
+                                    <li>
+                                        <a href="/setting/profile?id={{user._id}}">用户设置</a>
+                                    </li>
+                                    <li class="divider">
+                                    </li>
+                                    <li>
+                                        <a href="/login">切换用户</a>
+                                    </li>
+                                    <li class="divider">
+                                    <li>
+                                        <a href="/logout">退出</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            {{else}}
+                            <li>
+                                <a href="/login">登录</a>
+                            </li>
+                            <li>
+                                <a href="/register">注册</a>
+                            </li>
+                            {{ /if }}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+</div>

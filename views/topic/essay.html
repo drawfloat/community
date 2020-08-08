@@ -1,0 +1,121 @@
+{{extend '../_layout/layout.html'}}
+
+{{block 'title'}}{{topic.title}}{{/block}}
+
+{{block 'head'}}
+<link rel="stylesheet" href="/public/css/markdown-github.css">
+<link rel="stylesheet" href="/public/css/main.css">
+<style>
+  .praiseLike {
+    color: pink;
+  }
+
+  .text-wrapper {
+    white-space: pre-wrap;
+  }
+
+  .comment-wrapper {
+    white-space: pre-line;
+  }
+</style>
+{{/block}}
+
+{{block 'body'}}
+<section class="container">
+  <div class="row clearfix">
+    <div class="col-md-9 column">
+      <article class="markdown-body">
+        <h2 id="_1"><a name="user-content-_1" href="#_1" class="headeranchor-link" aria-hidden="true"><span
+              class="headeranchor"></span></a>{{topic.title}}</h2>
+        <blockquote>
+          <p class="text-wrapper">{{topic.content}}</p>
+        </blockquote>
+        <span class="pull-right">
+          {{topic.createdTime}}
+          <span class="text-primary">1楼</span>
+        </span>
+        <br>
+        <input type="hidden" value="{{topic._id}}" id="topic_id">
+        {{ if user}}
+        <span class="action pull-right" id="user_star">
+          <a href="javascript:;" class="glyphicon glyphicon-star-empty starUp">
+            <a href="javascript:;" class="">Star</a>
+          </a>
+          <span id="starNumber">{{topic.starNumber}}</span>
+          {{each starData}}
+          <input type="hidden" value="{{$value.isStar}}" class="starData">
+          {{/each}}
+        </span>
+        {{else}}
+        <span class="action pull-right" id="no_user_star">
+          <a href="javascript:;" class="glyphicon glyphicon-star-empty"></a>
+          <a href="javascript:;">Star</a>
+          <span>{{topic.starNumber}}</span>
+        </span>
+        {{/if}}
+      </article>
+
+      <div id="commentBox">
+        {{each comment}}
+        <div class="panel panel-default comment">
+          <div class="panel-heading">
+            <a href="/personal/personal?personal_id={{$value.commentatorId}}"
+              class="text-success">{{$value.commentator}}</a> 评论于...
+            <span>{{$value.commentTime}}</span>
+            <span class="action">
+              <!-- GET请求信息 -->
+              <input type="hidden" value="{{user&&user._id}}" class="get_user_id">
+              <input type="hidden" value="{{$value._id}}" class="comment_id">
+              <p class=" pull-right praiseLike">&nbsp;❤</p>
+              <a href="javascript:;" class=" pull-right praiseNumber">{{$value.praiseNumber}}</a>
+            </span>
+            <!-- 管理员、楼主、评论人 -->
+            {{if user&&user.isAdmin || user&&user._id===topic.authorId || user&&user._id===$value.commentatorId}}
+            <span class="action pull-right">
+              <a href="javascript:;"><i class="glyphicon glyphicon-thumbs-up pull-right praise"></i></a>
+              <a href="javascript:;"><i class="glyphicon glyphicon-thumbs-down pull-right tread"></i></a>
+              <a href="javascript:;"><i
+                  class="glyphicon glyphicon-remove-sign pull-right text-danger remove_comment"></i></a>
+            </span>
+            <!-- 普通用户 -->
+            {{else if user&&user.isAdmin===false}}
+            <span class="action pull-right">
+              <a href="javascript:;"><i class="glyphicon glyphicon-thumbs-up pull-right praise"></i></a>
+              <a href="javascript:;"><i class="glyphicon glyphicon-thumbs-down pull-right tread"></i></a>
+            </span>
+            {{/if}}
+          </div>
+          <div class="panel-body comment-wrapper">
+            {{$value.comment}}
+            <span class="pull-right text-primary">{{$index+2}}楼</span>
+          </div>
+        </div>
+        {{/each}}
+        <!-- 当前用户点赞的评论id和状态 -->
+        <div id="praiseComment">
+          {{each praiseData}}
+          <input type="hidden" value="{{$value.commentId}}" class="{{$value.isPraise}}">
+          {{/each}}
+        </div>
+      </div>
+
+      <hr>
+      <form id="comment_form">
+        <div class="form-group">
+          <!-- 保存评论人和评论文章id信息 -->
+          <input type="hidden" name="commentatorId" value="{{user&&user._id}}" class="user_id">
+          <input type="hidden" name="commentator" value="{{user&&user.nickname}}">
+          <input type="hidden" name="ofTopicId" value="{{topic._id}}" class="topic_id">
+          <label for="exampleInputPassword1">添加回复</label>
+          <textarea class="form-control" name="comment" id="" cols="10" rows="10"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">回复</button>
+      </form>
+    </div>
+  </div>
+</section>
+{{/block}}
+
+{{block 'script'}}
+<script src="/public/js/essay.js"></script>
+{{/block}}
