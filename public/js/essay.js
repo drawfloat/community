@@ -26,12 +26,32 @@ $(function () {
             userId = userId.replace(/"/g, '');
             // 如果帖子没有被用户标星
             if (!$(this).prop('status')) {
-                onstarChange(clickEle, 'pink', true, starNumber, starNumberEle, topicId, userId, 1);
+                clickEle.css('color', 'pink');
+                starNumber++;
+                starNumberEle.text(starNumber);
+                // 发送请求
+                $.get('/essay/star', {
+                    topicId: topicId,
+                    userId: userId,
+                    starNumber: starNumber,
+                    isStar: 1
+                });
+                // onstarChange(clickEle, 'pink', true, starNumber, starNumberEle, topicId, userId, 1);
                 $(this).prop('status', true);
 
             } else {
                 // 帖子被用户标星了
-                onstarChange(clickEle, '', false, starNumber, starNumberEle, topicId, userId, 0);
+                clickEle.css('color', '');
+                starNumber--;
+                starNumberEle.text(starNumber);
+                // 发送请求
+                $.get('/essay/star', {
+                    topicId: topicId,
+                    userId: userId,
+                    starNumber: starNumber,
+                    isStar: 0
+                });
+                // onstarChange(clickEle, '', false, starNumber, starNumberEle, topicId, userId, 0);
                 $(this).prop('status', false);
             }
         });
